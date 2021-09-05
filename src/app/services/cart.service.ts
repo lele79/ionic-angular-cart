@@ -6,6 +6,7 @@ export interface Product {
   name: string;
   price: number;
   amount: number;
+  size: number;
 }
 
 @Injectable({
@@ -13,10 +14,13 @@ export interface Product {
 })
 export class CartService {
   data: Product[] = [
-    { id: 0, name: 'Pizza Salami', price: 8.99, amount: 0 },
-    { id: 1, name: 'Pizza Classic', price: 5.49, amount: 0 },
-    { id: 2, name: 'Sliced Bread', price: 4.99, amount: 0 },
-    { id: 3, name: 'Salad', price: 6.99, amount: 0 }
+    { id: 0, name: 'Arancio moro/Tarocco', price: 8.99, amount: 0, size: 0 },
+    { id: 1, name: 'Arancio Navellino/Washington', price: 5.49, amount: 0, size: 0 },
+    { id: 2, name: 'Arancio Thompson', price: 4.99, amount: 0, size: 0 },
+    { id: 3, name: 'Arancio Comune', price: 6.99, amount: 0, size: 0 },
+    { id: 4, name: 'Clementino', price: 6.99, amount: 0, size: 0 },
+    { id: 5, name: 'Limone', price: 6.99, amount: 0, size: 0 },
+
   ];
 
   private cart = [];
@@ -72,6 +76,20 @@ export class CartService {
         this.cartItemCount.next(this.cartItemCount.value - p.amount);
         this.cart.splice(index, 1);
       }
+    }
+  }
+  dimension(price, size) {
+    if(size === 0) { // random
+      return price;
+    }
+    if(size === 1){ // small
+      return price*1.2;
+    }
+    if(size === 2){ // medium
+      return price*1.5;
+    }
+    if(size === 3){ // Large
+      return price*2;
     }
   }
 }

@@ -1,33 +1,47 @@
 <ion-header>
 	<ion-toolbar color="primary">
+		<div>
 		<ion-title>
 			Ionic Shopping
 		</ion-title>
+		<ion-fab  vertical="center" horizontal="end" >
+			<ion-fab-button  style=" padding-top: 0.3em; height: 3.7em; width: 4.5em" type="submit" color="light" (click)="openCart()" #cart>
+				<ion-icon name="cart" class="cart-icon"></ion-icon>
+				<div  style="padding-top: 1.5em;  color: darkgreen">{{ cartItemCount | async }}</div>
+			</ion-fab-button>
+		</ion-fab>
+		</div>
 	</ion-toolbar>
+
 </ion-header>
 
 <ion-content>
 	<!--fab button at top right that opens shopping cart-->
-	<ion-fab vertical="top" horizontal="end" slot="fixed">
-		<ion-fab-button (click)="openCart()" #cart>
-			<div class="cart-length">{{ cartItemCount | async }}</div>
-			<ion-icon name="cart" class="cart-icon"></ion-icon>
-		</ion-fab-button>
-	</ion-fab>
+
 
 	<!--list of products in 2 columns: product name and price, add icon-->
 	<ion-list>
 		<ion-card *ngFor="let p of products">
 			<ion-card-header>
 				<ion-card-title>{{ p.name }}</ion-card-title>
+				<ion-item>
+					<ion-range  snaps="true" [(ngModel)]="dimension"  pin="true" min="0" max="3" step="1">
+						<ion-icon size="small" slot="start" name="remove"></ion-icon>
+						<ion-icon size="large" slot="end" name="add"></ion-icon>
+					</ion-range>
+					<ion-chip >{{size[dimension]? size[dimension]: 'casuale' }}</ion-chip>
+				</ion-item>
 			</ion-card-header>
 			<ion-card-content>
 				<ion-row class="ion-align-items-center">
 					<ion-col size="8">
 						<ion-label color="secondary">
-							<b>{{ p.price | currency:'EUR' }}</b>
+							<b>{{ p.price + ' LL' }}</b>
 						</ion-label>
 					</ion-col>
+					<ion-item>
+							<img src="https://www.oscartintori.it/wp-content/uploads/2017/05/50C-Citrus-sinensis-washington-navel-1.jpg">
+					</ion-item>
 					<ion-col size="4" class="ion-text-right">
 						<ion-button fill="clear" (click)="addToCart(p)">
 							<ion-icon name="add"></ion-icon>

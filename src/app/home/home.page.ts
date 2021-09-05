@@ -12,8 +12,9 @@ import { CartModalPage } from '../pages/cart-modal/cart-modal.page';
 export class HomePage implements OnInit {
 	cart = [];
 	products = [];
+	dimension: 0;
 	cartItemCount: BehaviorSubject<number>;
-
+	size = {0: 'causale', 1: 'piccolo', 2: 'medio', 3: 'grande'}
 	@ViewChild('cart', {static: false, read: ElementRef})fab: ElementRef;
 
 	constructor(private cartService: CartService, private modalCtrl: ModalController) {}

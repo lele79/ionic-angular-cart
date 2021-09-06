@@ -10,7 +10,9 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "resolveJsonModule": true,
     "target": "es2015",
+    "types" : ["node", "lodash", "express", "zone.js"],
     "typeRoots": [
       "node_modules/@types"
     ],

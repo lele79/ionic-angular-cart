@@ -3,6 +3,9 @@
 
 *~
 *.sw[mnpcod]
+.env
+*.env
+secret.json
 .tmp
 *.tmp
 *.tmp.*

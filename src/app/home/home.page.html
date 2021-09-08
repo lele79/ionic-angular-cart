@@ -37,12 +37,12 @@
 							<ion-img [src]="'https://drive.google.com/file/d/1yKjo0VTvT3Z32Ys80GrKL1JQPb7gUs2Q/view?usp=sharing'" ></ion-img>
 						</div>
 					</ion-col>
-					<ion-col size="4">
+					<ion-col size="6">
 						<ion-label style="float: right" color="secondary">
-							<b>{{ p.price * refreshPrice(p.size) + ' LL' }}</b>
+							<b>Costo singolo frutto: {{ p.price * refreshPrice(p.size) + ' LL' }}</b>
 						</ion-label>
 					</ion-col>
-					<ion-col size="4" class="ion-text-right">
+					<ion-col size="2" class="ion-text-right">
 						<ion-button  (click)="addToCart(p)">
 							<ion-icon name="add"></ion-icon>
 						</ion-button>

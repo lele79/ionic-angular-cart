@@ -23,7 +23,7 @@
 						</ion-col>
 
 						<ion-col size="1" class="ion-align-self-center">
-							{{ product.amount }}
+							{{  product.quantity }}
 						</ion-col>
 
 						<ion-col size="2" class="ion-align-self-center">
@@ -50,10 +50,10 @@
 					<!--row with 2 columns - product name and amount-->
 					<ion-row>
 						<ion-col size="9">
-							<b>{{ product.name }}</b>
+							<b>{{ product.name}}  {{product.size === 3 ? 'grande':  product.size === 1 ? 'piccolo': product.size === 2 ? 'medio' : 'casuale'}}</b>
 						</ion-col>
 						<ion-col size="3" class="ion-text-end">
-							{{ product.amount * product.price | currency:'USD' }}
+							{{ priceDimension(product.price * product.amount , product.size)  }} LL
 						</ion-col>
 					</ion-row>
 				</ion-grid>
@@ -64,7 +64,7 @@
 					<ion-row>
 						<ion-col size="9"> Total: </ion-col>
 						<ion-col size="3" class="ion-text-end">
-							{{ getTotal() | currency:'USD' }}
+							{{ getTotal() }} LL
 						</ion-col>
 					</ion-row>
 				</ion-grid>

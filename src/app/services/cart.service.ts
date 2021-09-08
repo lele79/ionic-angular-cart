@@ -7,6 +7,7 @@ export interface Product {
   price: number;
   amount: number;
   size: number;
+  quantity: number
 }
 
 @Injectable({
@@ -14,12 +15,12 @@ export interface Product {
 })
 export class CartService {
   data: Product[] = [
-    { id: 0, name: 'Arancio moro/Tarocco', price: 8.99, amount: 0, size: 0 },
-    { id: 1, name: 'Arancio Navellino/Washington', price: 5.49, amount: 0, size: 0 },
-    { id: 2, name: 'Arancio Thompson', price: 4.99, amount: 0, size: 0 },
-    { id: 3, name: 'Arancio Comune', price: 6.99, amount: 0, size: 0 },
-    { id: 4, name: 'Clementino', price: 6.99, amount: 0, size: 0 },
-    { id: 5, name: 'Limone', price: 6.99, amount: 0, size: 0 },
+    { id: 0, name: 'Arancio moro/Tarocco', price: 1.5, amount: 0, size: 0, quantity: 1 },
+    { id: 1, name: 'Arancio Navellino/Washington', price: 2, amount: 0, size: 0, quantity: 1 },
+    { id: 2, name: 'Arancio Thompson', price: 3, amount: 0, size: 0, quantity: 1 },
+    { id: 3, name: 'Arancio Comune', price: 1, amount: 0, size: 0, quantity: 1 },
+    { id: 4, name: 'Clementino', price: 2, amount: 0, size: 0, quantity: 1 },
+    { id: 5, name: 'Limone', price: 3, amount: 0, size: 0, quantity: 1 },
 
   ];
 
@@ -46,12 +47,14 @@ export class CartService {
     for (let p of this.cart) {
       if (p.id === product.id) {
         p.amount += 1;
+        p.quantity += 1;
         added = true;
         break;
       }
     }
     if (!added) {
 			product.amount = 1;
+			product.quantity = 1;
 			this.cart.push(product);
 			console.log(`product ${product.name} pushed to cart`);
 		}
@@ -62,7 +65,8 @@ export class CartService {
     for (let [index, p] of this.cart.entries()) {
       if (p.id === product.id) {
         p.amount -= 1;
-        if (p.amount == 0) {
+        p.quantity -= 1;
+        if (p.quantity == 0) {
           this.cart.splice(index, 1);
         }
       }
@@ -78,18 +82,18 @@ export class CartService {
       }
     }
   }
-  dimension(price, size) {
-    if(size === 0) { // random
-      return price;
+  mulSize( size) {
+    if (size === 0) { // random
+      return 1;
     }
-    if(size === 1){ // small
-      return price*1.2;
+    if (size === 1) { // small
+      return 1.2;
     }
-    if(size === 2){ // medium
-      return price*1.5;
+    if (size === 2) { // medium
+      return 1.5;
     }
-    if(size === 3){ // Large
-      return price*2;
+    if (size === 3) { // Large
+      return 2;
     }
   }
 }

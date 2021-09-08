@@ -12,7 +12,7 @@ import { CartModalPage } from '../pages/cart-modal/cart-modal.page';
 export class HomePage implements OnInit {
 	cart = [];
 	products = [];
-	dimension: 0;
+	dimension = [];
 	cartItemCount: BehaviorSubject<number>;
 	size = {0: 'causale', 1: 'piccolo', 2: 'medio', 3: 'grande'}
 	@ViewChild('cart', {static: false, read: ElementRef})fab: ElementRef;
@@ -23,6 +23,7 @@ export class HomePage implements OnInit {
 		this.products = this.cartService.getProducts();
 		this.cart = this.cartService.getCart();
 		this.cartItemCount = this.cartService.getCartItemCount();
+
 	}
 
 	addToCart(product: Product) {
@@ -58,6 +59,22 @@ export class HomePage implements OnInit {
 			node.removeEventListener('animationend', handleAnimationEnd);
 		}
 		node.addEventListener('animationend', handleAnimationEnd);
+	}
+	changeValue(value) {
+		console.log('value', value.target.id)
+		let count = 0;
+		for (const item of this.products) {
+			count++;
+			if(item.id === value.target.id ) {
+				this.products[value.target.id].size = value ;
+			}
+		}
+		console.log('this.products', this.products)
+		return undefined;
+	}
+
+	refreshPrice(size) {
+		return this.cartService.mulSize(size);
 	}
 
 }

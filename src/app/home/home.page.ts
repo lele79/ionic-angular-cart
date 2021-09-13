@@ -4,6 +4,10 @@ import { ModalController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { CartModalPage } from '../pages/cart-modal/cart-modal.page';
 
+import { initializeApp } from 'firebase/app';
+import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
+import {environment} from '../../environments/environment';
+
 @Component({
 	selector: 'app-home',
 	templateUrl: 'home.page.html',
@@ -23,6 +27,51 @@ export class HomePage implements OnInit {
 		this.products = this.cartService.getProducts();
 		this.cart = this.cartService.getCart();
 		this.cartItemCount = this.cartService.getCartItemCount();
+		const app = initializeApp(environment.firebaseConfig);
+		console.log('app', app)
+		const storage = getStorage(app, environment.firebaseConfig.storageBucket);
+		console.log('storage', storage)
+		const pathReference = ref(storage, 'valencia.jpg');
+		console.log('pathReference', pathReference)
+		const gsReference = ref(storage, 'gs://bucket/valencia.jpg');
+		console.log('gsReference', gsReference)
+		getDownloadURL(ref(storage, 'valencia.jpg'))
+			.then((url) => {
+
+				console.log('url', url)
+				// This can be downloaded directly:
+				const xhr = new XMLHttpRequest();
+				xhr.responseType = 'blob';
+				xhr.onload = (event) => {
+					const blob = xhr.response;
+				};
+				xhr.open('GET', url);
+				xhr.send();
+
+				// Or inserted into an <img> element
+				const img = document.getElementById('myimg');
+				img.setAttribute('src', url);
+			})
+			.catch((error) => {
+				// Handle any errors
+			});
+
+		const listRef = ref(storage, 'gs://shopping-fruit.appspot.com');
+		listAll(listRef)
+			.then((res) => {
+				res.prefixes.forEach((folderRef) => {
+					console.log('folderRef', folderRef)
+
+					// All the prefixes under listRef.
+					// You may call listAll() recursively on them.
+				});
+				res.items.forEach((itemRef) => {
+					console.log('itemRef', itemRef)
+					// All the items under listRef.
+				});
+			}).catch((error) => {
+			console.log('error', error)
+		});
 
 	}
 

@@ -16,47 +16,23 @@ import {environment} from '../../environments/environment';
 export class HomePage implements OnInit {
 	cart = [];
 	products = [];
-	dimension = [];
+	urls = [];
+	storage: any;
 	cartItemCount: BehaviorSubject<number>;
 	size = {0: 'causale', 1: 'piccolo', 2: 'medio', 3: 'grande'}
 	@ViewChild('cart', {static: false, read: ElementRef})fab: ElementRef;
 
 	constructor(private cartService: CartService, private modalCtrl: ModalController) {}
 
-	ngOnInit() {
+	 ngOnInit() {
 		this.products = this.cartService.getProducts();
 		this.cart = this.cartService.getCart();
 		this.cartItemCount = this.cartService.getCartItemCount();
 		const app = initializeApp(environment.firebaseConfig);
 		console.log('app', app)
-		const storage = getStorage(app, environment.firebaseConfig.storageBucket);
-		console.log('storage', storage)
-		const pathReference = ref(storage, 'valencia.jpg');
-		console.log('pathReference', pathReference)
-		const gsReference = ref(storage, 'gs://bucket/valencia.jpg');
-		console.log('gsReference', gsReference)
-		getDownloadURL(ref(storage, 'valencia.jpg'))
-			.then((url) => {
-
-				console.log('url', url)
-				// This can be downloaded directly:
-				const xhr = new XMLHttpRequest();
-				xhr.responseType = 'blob';
-				xhr.onload = (event) => {
-					const blob = xhr.response;
-				};
-				xhr.open('GET', url);
-				xhr.send();
-
-				// Or inserted into an <img> element
-				const img = document.getElementById('myimg');
-				img.setAttribute('src', url);
-			})
-			.catch((error) => {
-				// Handle any errors
-			});
-
-		const listRef = ref(storage, 'gs://shopping-fruit.appspot.com');
+		this.storage = getStorage(app, environment.firebaseConfig.storageBucket);
+		console.log('storage', this.storage)
+		const listRef = ref(this.storage, 'gs://shopping-fruit.appspot.com');
 		listAll(listRef)
 			.then((res) => {
 				res.prefixes.forEach((folderRef) => {
@@ -65,9 +41,13 @@ export class HomePage implements OnInit {
 					// All the prefixes under listRef.
 					// You may call listAll() recursively on them.
 				});
-				res.items.forEach((itemRef) => {
+				res.items.forEach(async (itemRef) => {
 					console.log('itemRef', itemRef)
-					// All the items under listRef.
+					const url = await this.getUrlDownload(itemRef.fullPath)
+					this.urls.push(url)
+					console.log('urlurls', this.urls)
+
+
 				});
 			}).catch((error) => {
 			console.log('error', error)
@@ -124,6 +104,11 @@ export class HomePage implements OnInit {
 
 	refreshPrice(size) {
 		return this.cartService.mulSize(size);
+	}
+
+	async getUrlDownload(fullPath: string): Promise<any> {
+		const refer = ref(this.storage, fullPath)
+		return getDownloadURL(refer)
 	}
 
 }

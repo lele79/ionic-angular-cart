@@ -4,10 +4,6 @@ import { ModalController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { CartModalPage } from '../pages/cart-modal/cart-modal.page';
 
-import { initializeApp } from 'firebase/app';
-import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
-import {environment} from '../../environments/environment';
-
 @Component({
 	selector: 'app-home',
 	templateUrl: 'home.page.html',
@@ -24,35 +20,11 @@ export class HomePage implements OnInit {
 
 	constructor(private cartService: CartService, private modalCtrl: ModalController) {}
 
-	 ngOnInit() {
-		this.products = this.cartService.getProducts();
+	 async ngOnInit() {
+		this.products =await this.cartService.getProducts();
+		console.log('this.products', this.products)
 		this.cart = this.cartService.getCart();
 		this.cartItemCount = this.cartService.getCartItemCount();
-		const app = initializeApp(environment.firebaseConfig);
-		console.log('app', app)
-		this.storage = getStorage(app, environment.firebaseConfig.storageBucket);
-		console.log('storage', this.storage)
-		const listRef = ref(this.storage, 'gs://shopping-fruit.appspot.com');
-		listAll(listRef)
-			.then((res) => {
-				res.prefixes.forEach((folderRef) => {
-					console.log('folderRef', folderRef)
-
-					// All the prefixes under listRef.
-					// You may call listAll() recursively on them.
-				});
-				res.items.forEach(async (itemRef) => {
-					console.log('itemRef', itemRef)
-					const url = await this.getUrlDownload(itemRef.fullPath)
-					this.urls.push(url)
-					console.log('urlurls', this.urls)
-
-
-				});
-			}).catch((error) => {
-			console.log('error', error)
-		});
-
 	}
 
 	addToCart(product: Product) {
@@ -104,11 +76,6 @@ export class HomePage implements OnInit {
 
 	refreshPrice(size) {
 		return this.cartService.mulSize(size);
-	}
-
-	async getUrlDownload(fullPath: string): Promise<any> {
-		const refer = ref(this.storage, fullPath)
-		return getDownloadURL(refer)
 	}
 
 }

@@ -1,5 +1,8 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import {initializeApp} from 'firebase/app';
+import {environment} from '../../environments/environment';
+import {getDownloadURL, getStorage, listAll, ref} from 'firebase/storage';
 
 export interface Product {
   id: number;
@@ -7,7 +10,8 @@ export interface Product {
   price: number;
   amount: number;
   size: number;
-  quantity: number
+  quantity: number,
+  image?: string
 }
 
 @Injectable({
@@ -26,11 +30,32 @@ export class CartService {
 
   private cart = [];
   private cartItemCount = new BehaviorSubject(0);
+  storage: any;
 
   constructor() {}
 
-  getProducts(): Product[] {
-    return this.data;
+  async getProducts(): Promise<any> {
+    const app = initializeApp(environment.firebaseConfig);
+    console.log('app', app)
+    this.storage = getStorage(app, environment.firebaseConfig.storageBucket);
+    console.log('storage', this.storage)
+    const listRef = ref(this.storage, 'gs://shopping-fruit.appspot.com');
+    const list = await this.imageList(listRef)
+    console.log('list', list)
+    for(const itemList of list.items) {
+      if(Number(itemList.name) === this.data[Number(itemList.name)].id) {
+        this.data[Number(itemList.name)].image = await this.getUrlDownload(itemList.fullPath)
+      }
+    }
+    return this.data
+  }
+  async getUrlDownload(fullPath: string): Promise<any> {
+    const refer = ref(this.storage, fullPath)
+    return getDownloadURL(refer)
+  }
+
+  async imageList(listRef: any): Promise<any> {
+    return (listAll(listRef))
   }
 
   getCart(): Product[] {

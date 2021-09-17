@@ -1,0 +1,9 @@
+[
+    { id: 0, name: 'Arancio moro/Tarocco', price: 1.5, amount: 0, size: 0, quantity: 1 },
+    { id: 1, name: 'Arancio Navellino/Washington', price: 2, amount: 0, size: 0, quantity: 1 },
+    { id: 2, name: 'Arancio Thompson', price: 3, amount: 0, size: 0, quantity: 1 },
+    { id: 3, name: 'Arancio Comune', price: 1, amount: 0, size: 0, quantity: 1 },
+    { id: 4, name: 'Clementino', price: 2, amount: 0, size: 0, quantity: 1 },
+    { id: 5, name: 'Limone', price: 3, amount: 0, size: 0, quantity: 1 },
+
+  ]

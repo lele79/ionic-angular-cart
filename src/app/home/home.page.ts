@@ -18,9 +18,12 @@ export class HomePage implements OnInit {
 	size = {0: 'causale', 1: 'piccolo', 2: 'medio', 3: 'grande'}
 	@ViewChild('cart', {static: false, read: ElementRef})fab: ElementRef;
 
-	constructor(private cartService: CartService, private modalCtrl: ModalController) {}
+	constructor(private cartService: CartService, private modalCtrl: ModalController) {
+		this.products = this.cartService.getProductsWithoutImage();
+	}
 
 	 async ngOnInit() {
+
 		this.products =await this.cartService.getProducts();
 		console.log('this.products', this.products)
 		this.cart = this.cartService.getCart();

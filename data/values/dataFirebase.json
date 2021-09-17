@@ -1,0 +1,11 @@
+{
+
+    "mor":  {"name": "Arancio moro/Tarocco", "price": 1.5},
+    "nav":  {"name": "Arancio Navellino/Washington", "price": 2},
+    "tho":  {"name": "Arancio Thompson", "price": 3 },
+    "com":  {"name": "Arancio Comune", "price": 1},
+    "cle":  {"name": "Clementino", "price": 2 },
+    "lim":  {"name": "Limone", "price": 3}
+
+}
+

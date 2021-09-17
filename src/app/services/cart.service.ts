@@ -19,12 +19,12 @@ export interface Product {
 })
 export class CartService {
   data: Product[] = [
-    { id: 0, name: 'Arancio moro/Tarocco', price: 1.5, amount: 0, size: 0, quantity: 1 },
-    { id: 1, name: 'Arancio Navellino/Washington', price: 2, amount: 0, size: 0, quantity: 1 },
-    { id: 2, name: 'Arancio Thompson', price: 3, amount: 0, size: 0, quantity: 1 },
-    { id: 3, name: 'Arancio Comune', price: 1, amount: 0, size: 0, quantity: 1 },
-    { id: 4, name: 'Clementino', price: 2, amount: 0, size: 0, quantity: 1 },
-    { id: 5, name: 'Limone', price: 3, amount: 0, size: 0, quantity: 1 },
+    { id: 0, name: 'Arancio moro/Tarocco', price: 1.5, amount: 0, size: 0, quantity: 1, image: '' },
+    { id: 1, name: 'Arancio Navellino/Washington', price: 2, amount: 0, size: 0, quantity: 1, image: '' },
+    { id: 2, name: 'Arancio Thompson', price: 3, amount: 0, size: 0, quantity: 1, image: '' },
+    { id: 3, name: 'Arancio Comune', price: 1, amount: 0, size: 0, quantity: 1, image: '' },
+    { id: 4, name: 'Clementino', price: 2, amount: 0, size: 0, quantity: 1, image: '' },
+    { id: 5, name: 'Limone', price: 3, amount: 0, size: 0, quantity: 1, image: '' },
 
   ];
 
@@ -33,6 +33,10 @@ export class CartService {
   storage: any;
 
   constructor() {}
+
+  getProductsWithoutImage() {
+    return this.data;
+  }
 
   async getProducts(): Promise<any> {
     const app = initializeApp(environment.firebaseConfig);
@@ -45,8 +49,8 @@ export class CartService {
     for(const itemList of list.items) {
       if(Number(itemList.name) === this.data[Number(itemList.name)].id) {
         this.data[Number(itemList.name)].image = await this.getUrlDownload(itemList.fullPath)
+        }
       }
-    }
     return this.data
   }
   async getUrlDownload(fullPath: string): Promise<any> {
